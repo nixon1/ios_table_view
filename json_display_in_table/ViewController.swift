@@ -23,7 +23,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        
     }
     
     
@@ -48,9 +47,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("You selected cell #\(indexPath.row)!")
-    }
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        println("You selected cell #\(indexPath.row)!")
+//    }
     
     func loadTableItems() {
         DataManager.getTopAppsDataFromFileWithSuccess { (data) -> Void in
@@ -65,6 +64,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 let appName2 = json["feed"]["entry"][index]["im:name"]["label"].string
                 self.items.append(appName2!)
             }
+            self.tableView.reloadData()
         }
     }
     
