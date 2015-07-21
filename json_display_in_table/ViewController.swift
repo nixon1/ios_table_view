@@ -12,22 +12,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet
     var tableView: UITableView!
-    var items: [String] = ["We"]
+    var items: [String] = []
     
+    @IBOutlet weak var nav: UINavigationBar!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        loadTableItems()
+        self.items = []
         
         
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        loadTableItems()
+    }
+        
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
     }
-    
-    
-        
-    
     
     
     override func didReceiveMemoryWarning() {
@@ -52,19 +53,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //    }
     
     func loadTableItems() {
-        DataManager.getTopAppsDataFromFileWithSuccess { (data) -> Void in
+        DataManager.getTopAppsDataFromItunesWithSuccess { (data) -> Void in
             // Get #1 app name using SwiftyJSON
             let json = JSON(data: data)
-            /*if let appName = json["feed"]["entry"][0]["im:name"]["label"].string {
-            println("SwiftyJSON: \(appName)")
-            self.items = ["\(appName)", "yo", "Whatsup"]
-            }
-            */
             for index in 0...8 {
                 let appName2 = json["feed"]["entry"][index]["im:name"]["label"].string
                 self.items.append(appName2!)
             }
-            self.tableView.reloadData()
+            dispatch_async(dispatch_get_main_queue(),{
+                self.tableView.reloadData()
+            })
         }
     }
     
